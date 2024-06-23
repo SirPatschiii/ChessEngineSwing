@@ -1,2 +1,12 @@
 .idea/*
 build/*
+
+# Excluding tests
+test/*
+lib/JUnit 5.8.1/*
+lib/JUnit 5.8.1/apiguardian-api-1.1.2.jar
+lib/JUnit 5.8.1/junit-jupiter-api-5.8.1.jar
+lib/JUnit 5.8.1/junit-jupiter-engine-5.8.1.jar
+lib/JUnit 5.8.1/junit-platform-commons-1.8.1.jar
+lib/JUnit 5.8.1/junit-platform-engine-1.8.1.jar
+lib/JUnit 5.8.1/opentest4j-1.2.0.jar
