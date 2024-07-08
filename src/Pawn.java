@@ -29,6 +29,7 @@ public class Pawn {
         long whitePawns = gameState.get(EPieceAbbreviation.WP);
         long allPieces = BoardHelper.getCompletePossession(gameState);
         long whitePieces = BoardHelper.getWhitePossession(gameState);
+        long blackPieces = BoardHelper.getBlackPossession(gameState);
         long mask;
         long pawn;
 
@@ -42,9 +43,9 @@ public class Pawn {
             if (pawn != 0) {
                 // Calculate all possible moves for the observed pawn
                 long singleStep = (pawn << 8) & ~allPieces;
-                long doubleStep = ((pawn << 16) & ~allPieces) & ChessEngine.RANK_4;
-                long attackLeft = ((pawn << 7) & ~ChessEngine.FILE_H) & ~whitePieces;
-                long attackRight = ((pawn << 9) & ~ChessEngine.FILE_A) & ~whitePieces;
+                long doubleStep = (((pawn << 8) & ~allPieces) << 8) & ~allPieces & ChessEngine.RANK_4;
+                long attackLeft = ((pawn << 7) & ~ChessEngine.FILE_H) & ~whitePieces & blackPieces;
+                long attackRight = ((pawn << 9) & ~ChessEngine.FILE_A) & ~whitePieces & blackPieces;
 
                 long allPossibleMoves = singleStep | doubleStep | attackLeft | attackRight;
 
@@ -78,6 +79,7 @@ public class Pawn {
 
         long blackPawns = gameState.get(EPieceAbbreviation.BP);
         long allPieces = BoardHelper.getCompletePossession(gameState);
+        long whitePieces = BoardHelper.getWhitePossession(gameState);
         long blackPieces = BoardHelper.getBlackPossession(gameState);
         long mask;
         long pawn;
@@ -92,9 +94,9 @@ public class Pawn {
             if (pawn != 0) {
                 // Calculate all possible moves for the observed pawn
                 long singleStep = (pawn >> 8) & ~allPieces;
-                long doubleStep = ((pawn >> 16) & ~allPieces) & ChessEngine.RANK_5;
-                long attackLeft = ((pawn >> 9) & ~ChessEngine.FILE_H) & ~blackPieces;
-                long attackRight = ((pawn >> 7) & ~ChessEngine.FILE_A) & ~blackPieces;
+                long doubleStep = (((pawn >> 8) & ~allPieces) >> 8) & ~allPieces & ChessEngine.RANK_5;
+                long attackLeft = ((pawn >> 9) & ~ChessEngine.FILE_H) & ~blackPieces & whitePieces;
+                long attackRight = ((pawn >> 7) & ~ChessEngine.FILE_A) & ~blackPieces & whitePieces;
 
                 long allPossibleMoves = singleStep | doubleStep | attackLeft | attackRight;
 
