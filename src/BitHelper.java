@@ -1,38 +1,25 @@
 /**
- * Utility class providing helper methods for manipulating and inspecting bits in a long bitstream.
- *
  * <p>
- * The {@code BitHelper} class includes static methods for:
- * <ul>
- *     <li>Setting a bit at a specified position in a bitstream.</li>
- *     <li>Clearing a bit at a specified position in a bitstream.</li>
- *     <li>Checking if a bit is set at a specified position in a bitstream.</li>
- *     <li>Counting the number of bits set to {@code 1} in a bitstream.</li>
- *     <li>Printing the binary representation of a bitstream in a single line.</li>
- *     <li>Printing the binary representation of a bitstream in a matrix format (8x8).</li>
- * </ul>
- * </p>
- *
- * <p>
- * This class does not support instantiation as all methods are static.
+ *  Utility class for bitwise operations on long bitstreams. This class provides methods to
+ *  set, clear, check, and count bits, as well as perform bitwise operations and shifts.
+ *  It is implemented using the singleton pattern to prevent instantiation.
  * </p>
  *
  * @author SirPatschiii
- * @version 2024-06-26
+ * @version 08.07.2024
  */
 public class BitHelper {
-    /**
-     * Private constructor to prevent instantiation of the utility class.
-     */
     private BitHelper() {
         // Private constructor to prevent instantiation
     }
 
     /**
-     * Sets a bit at a specified position in the given bitstream.
+     * <p>
+     *  Sets a bit at a specified position in the given bitstream.
+     * </p>
      *
      * @param bitstream The original bitstream.
-     * @param position  The position (0 to 63) where the bit should be set.
+     * @param position The position (0 to 63) where the bit should be set.
      * @return The bitstream with the specified bit set.
      */
     public static long setBit(long bitstream, int position) {
@@ -40,10 +27,12 @@ public class BitHelper {
     }
 
     /**
-     * Clears a bit at a specified position in the given bitstream.
+     * <p>
+     *  Clears a bit at a specified position in the given bitstream.
+     * </p>
      *
      * @param bitstream The original bitstream.
-     * @param position  The position (0 to 63) where the bit should be cleared.
+     * @param position The position (0 to 63) where the bit should be cleared.
      * @return The bitstream with the specified bit cleared.
      */
     public static long clearBit(long bitstream, int position) {
@@ -51,10 +40,12 @@ public class BitHelper {
     }
 
     /**
-     * Checks if a bit is set at a specified position in the given bitstream.
+     * <p>
+     *  Checks if a bit is set at a specified position in the given bitstream.
+     * </p>
      *
      * @param bitstream The bitstream to check.
-     * @param position  The position (0 to 63) of the bit to check.
+     * @param position The position (0 to 63) of the bit to check.
      * @return {@code true} if the bit is set (1), {@code false} otherwise (0).
      */
     public static boolean isBitSet(long bitstream, int position) {
@@ -62,7 +53,9 @@ public class BitHelper {
     }
 
     /**
-     * Counts the number of bits set to {@code 1} in the given bitstream.
+     * <p>
+     *  Counts the number of bits set to {@code 1} in the given bitstream.
+     * </p>
      *
      * @param bitstream The bitstream to count bits from.
      * @return The number of bits set to {@code 1} in the bitstream.
@@ -72,7 +65,99 @@ public class BitHelper {
     }
 
     /**
-     * Prints the binary representation of the given bitstream in a single line.
+     * <p>
+     *  Performs a bitwise AND operation on two bitstreams.
+     * </p>
+     *
+     * @param bitstreamA The first bitstream.
+     * @param bitstreamB The second bitstream.
+     * @return The result of the bitwise AND operation.
+     */
+    public static long bitwiseAND(long bitstreamA, long bitstreamB) {
+        return bitstreamA & bitstreamB;
+    }
+
+    /**
+     * <p>
+     *  Performs a bitwise OR operation on two bitstreams.
+     * </p>
+     *
+     * @param bitstreamA The first bitstream.
+     * @param bitstreamB The second bitstream.
+     * @return The result of the bitwise OR operation.
+     */
+    public static long bitwiseOR(long bitstreamA, long bitstreamB) {
+        return bitstreamA | bitstreamB;
+    }
+
+    /**
+     * <p>
+     *  Performs a bitwise XOR operation on two bitstreams.
+     * </p>
+     *
+     * @param bitstreamA The first bitstream.
+     * @param bitstreamB The second bitstream.
+     * @return The result of the bitwise XOR operation.
+     */
+    public static long bitwiseXOR(long bitstreamA, long bitstreamB) {
+        return bitstreamA ^ bitstreamB;
+    }
+
+    /**
+     * <p>
+     *  Performs a bitwise NOT operation on a bitstream.
+     * </p>
+     *
+     * @param bitstream The bitstream to invert.
+     * @return The result of the bitwise NOT operation.
+     */
+    public static long bitwiseNOT(long bitstream) {
+        return ~bitstream;
+    }
+
+    /**
+     * <p>
+     *  Shifts the bits in the bitstream to the left by the specified amount.
+     * </p>
+     *
+     * @param bitstream The bitstream to shift.
+     * @param amount The number of positions to shift.
+     * @return The shifted bitstream.
+     */
+    public static long shiftLeft(long bitstream, byte amount) {
+        return bitstream << amount;
+    }
+
+    /**
+     * <p>
+     *  Shifts the bits in the bitstream to the right by the specified amount, preserving the sign.
+     * </p>
+     *
+     * @param bitstream The bitstream to shift.
+     * @param amount The number of positions to shift.
+     * @return The shifted bitstream.
+     */
+    public static long shiftRight(long bitstream, byte amount) {
+        return bitstream >> amount;
+    }
+
+    /**
+     * <p>
+     *  Shifts the bits in the bitstream to the right by the specified amount, without preserving the sign.
+     * </p>
+     *
+     * @param bitstream The bitstream to shift.
+     * @param amount The number of positions to shift.
+     * @return The shifted bitstream.
+     */
+    public static long shiftRightWithoutPreservingSign(long bitstream, byte amount) {
+        return bitstream >>> amount;
+    }
+
+    /**
+     * <p>
+     *  Prints the binary representation of the given bitstream in a single line.
+     * </p>
      *
      * @param bitstream The bitstream to print.
      */
@@ -83,17 +168,20 @@ public class BitHelper {
     }
 
     /**
-     * Prints the binary representation of the given bitstream in a matrix format (8x8).
+     * <p>
+     *  Prints the binary representation of the given bitstream in an 8x8 matrix.
+     * </p>
      *
      * @param bitstream The bitstream to print.
      */
     public static void printBitstreamInMatrix(long bitstream) {
-        for (int i = 0; i < 64; i++) {
-            System.out.print(isBitSet(bitstream, i) ? "1" : "0");
-            System.out.print(" ");
-            if ((i + 1) % 8 == 0) {
-                System.out.println();
+        for (int i = 7; i >= 0; i--) {
+            for (int j = 7; j >= 0; j--) {
+                long mask = 1L << (i * 8 + j);
+                System.out.print((bitstream & mask) != 0 ? "1 " : "0 ");
             }
+            System.out.println();
         }
+        System.out.println();
     }
 }

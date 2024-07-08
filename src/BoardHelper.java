@@ -1,44 +1,101 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Utility class providing helper methods for chess board operations.
- * This class includes methods to convert board indices to ranks and files.
- *
  * <p>
- * The {@code BoardHelper} class offers static methods for converting:
- * <ul>
- *     <li>Board index to rank (1 through 8).</li>
- *     <li>Board index to chess file (a through h).</li>
- * </ul>
+ *  Utility class for board-related operations in a chess game. This class provides methods to
+ *  convert board indices to ranks and files, and to calculate the possession bitboards for white, black, and all pieces.
+ *  It is implemented using the singleton pattern to prevent instantiation.
  * </p>
  *
  * @author SirPatschiii
- * @version 2024-06-26
+ * @version 08.07.2024
  */
 public class BoardHelper {
-    /**
-     * Private constructor to prevent instantiation of the utility class.
-     */
     private BoardHelper() {
         // Private constructor to prevent instantiation
     }
 
     /**
-     * Converts a board index to its corresponding rank on the chessboard.
+     * <p>
+     *  Converts a board index to a rank.
+     * </p>
      *
-     * @param index The board index (0 through 63).
-     * @return The rank on the chessboard (1 through 8).
+     * @param index the board index (0-63)
+     * @return the rank (1-8) corresponding to the given index
      */
     public static short indexToRank(short index) {
         return (short) (7 - index / 8 + 1);
     }
 
     /**
-     * Converts a board index to its corresponding chess file (column) on the chessboard.
+     * <p>
+     *  Converts a board index to a file.
+     * </p>
      *
-     * @param index The board index (0 through 63).
-     * @return The chess file (a through h).
+     * @param index the board index (0-63)
+     * @return the file (A-H) corresponding to the given index
      */
     public static EChessFile indexToFile(short index) {
         EChessFile[] chessFiles = EChessFile.values();
         return chessFiles[index % 8];
+    }
+
+    /**
+     * <p>
+     *  Calculates the bitboard representing all squares occupied by white pieces.
+     * </p>
+     *
+     * @param gameState the current game state as a hashmap of piece abbreviations and their bitboards
+     * @return a long value representing the bitboard of all squares occupied by white pieces
+     */
+    public static Long getWhitePossession(HashMap<EPieceAbbreviation, Long> gameState) {
+        long possession = 0L;
+
+        for (Map.Entry<EPieceAbbreviation, Long> entry : gameState.entrySet()) {
+            if (entry.getKey().toString().contains("W")) {
+                possession = BitHelper.bitwiseOR(possession, entry.getValue());
+            }
+        }
+
+        return possession;
+    }
+
+    /**
+     * <p>
+     *  Calculates the bitboard representing all squares occupied by black pieces.
+     * </p>
+     *
+     * @param gameState the current game state as a hashmap of piece abbreviations and their bitboards
+     * @return a long value representing the bitboard of all squares occupied by black pieces
+     */
+    public static Long getBlackPossession(HashMap<EPieceAbbreviation, Long> gameState) {
+        long possession = 0L;
+
+        for (Map.Entry<EPieceAbbreviation, Long> entry : gameState.entrySet()) {
+            if (!entry.getKey().toString().contains("W")) {
+                possession = BitHelper.bitwiseOR(possession, entry.getValue());
+            }
+        }
+
+        return possession;
+    }
+
+    /**
+     * <p>
+     *  Calculates the bitboard representing all squares occupied by any pieces.
+     * </p>
+     *
+     * @param gameState the current game state as a hashmap of piece abbreviations and their bitboards
+     * @return a long value representing the bitboard of all squares occupied by any pieces
+     */
+    public static Long getCompletePossession(HashMap<EPieceAbbreviation, Long> gameState) {
+        long possession = 0L;
+
+        for (Map.Entry<EPieceAbbreviation, Long> entry : gameState.entrySet()) {
+            possession = BitHelper.bitwiseOR(possession, entry.getValue());
+        }
+
+        return possession;
     }
 }
