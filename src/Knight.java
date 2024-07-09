@@ -8,7 +8,7 @@ import java.util.HashMap;
  * </p>
  *
  * @author SirPatschiii
- * @version 08.07.2024
+ * @version 09.07.2024
  */
 public class Knight {
     private Knight() {
@@ -113,14 +113,14 @@ public class Knight {
      * @return a bitboard representing all possible moves for the knight
      */
     private static long getAllPossibleMoves(long knight, long pieces) {
-        long jumpNET = (knight << 15) & ~pieces & ~ChessEngine.FILE_H;
-        long jumpNEB = (knight << 6) & ~pieces & ~ChessEngine.FILE_H & ~ChessEngine.FILE_G;
-        long jumpSET = (knight >> 10) & ~pieces & ~ChessEngine.FILE_H & ~ChessEngine.FILE_G;
-        long jumpSEB = (knight >> 17) & ~pieces & ~ChessEngine.FILE_H;
-        long jumpSWB = (knight >> 15) & ~pieces & ~ChessEngine.FILE_A;
-        long jumpSWT = (knight >> 6) & ~pieces & ~ChessEngine.FILE_A & ~ChessEngine.FILE_B;
-        long jumpNWB = (knight << 10) & ~pieces & ~ChessEngine.FILE_A & ~ChessEngine.FILE_B;
-        long jumpNWT = (knight << 17) & ~pieces & ~ChessEngine.FILE_A;
+        long jumpNET = (knight << 15) & ~pieces & ~ChessEngine.FILE_A;
+        long jumpNEB = (knight << 6) & ~pieces & ~ChessEngine.FILE_A & ~ChessEngine.FILE_B;
+        long jumpSET = (knight >> 10) & ~pieces & ~ChessEngine.FILE_A & ~ChessEngine.FILE_B;
+        long jumpSEB = (knight >> 17) & ~pieces & ~ChessEngine.FILE_A;
+        long jumpSWB = (knight >> 15) & ~pieces & ~ChessEngine.FILE_H;
+        long jumpSWT = (knight >> 6) & ~pieces & ~ChessEngine.FILE_H & ~ChessEngine.FILE_G;
+        long jumpNWB = (knight << 10) & ~pieces & ~ChessEngine.FILE_H & ~ChessEngine.FILE_G;
+        long jumpNWT = (knight << 17) & ~pieces & ~ChessEngine.FILE_H;
 
         return jumpNET | jumpNEB | jumpSET | jumpSEB | jumpSWB | jumpSWT | jumpNWB | jumpNWT;
     }
