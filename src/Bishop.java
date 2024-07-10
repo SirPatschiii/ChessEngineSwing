@@ -131,7 +131,6 @@ public class Bishop {
             }
             allPossibleMoves = allPossibleMoves | pos;
         }
-
         // Calculates move south-east-bound
         pos = bishop;
         while (true) {
@@ -145,7 +144,6 @@ public class Bishop {
             }
             allPossibleMoves = allPossibleMoves | pos;
         }
-
         // Calculates move south-west-bound
         pos = bishop;
         while (true) {
@@ -159,7 +157,6 @@ public class Bishop {
             }
             allPossibleMoves = allPossibleMoves | pos;
         }
-
         // Calculates move north-west-bound
         pos = bishop;
         while (true) {
