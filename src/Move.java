@@ -1,12 +1,14 @@
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
- * The {@code Move} class represents a chess move, encapsulating the source square, destination square,
- * and the game state before the move was played.
- * This class also provides methods to retrieve the game state and a string representation of the move.
+ * <p>
+ * The {@code Move} class represents a chess move, encapsulating the starting and ending squares of the move,
+ * along with the game state before the move.
+ * </p>
  *
  * @author SirPatschiii
- * @version 2024-06-26
+ * @version 10.07.2024
  */
 public class Move {
     private final short squareFrom;
@@ -19,11 +21,13 @@ public class Move {
     private final String fileTo;
 
     /**
-     * Constructs a {@code Move} object with specified source square, destination square, and game state.
+     * <p>
+     * Constructs a {@code Move} object with the specified starting and ending squares, as well as the game state before the move.
+     * </p>
      *
-     * @param squareFrom the index of the source square (0-63) before the move.
-     * @param squareTo the index of the destination square (0-63) after the move.
-     * @param gameState the game state before the move, represented as a map of piece abbreviations to bitboards.
+     * @param squareFrom The starting square of the move, represented as a byte.
+     * @param squareTo   The ending square of the move, represented as a byte.
+     * @param gameState  The game state before the move, represented as a {@code HashMap} with piece abbreviations as keys and bitboards as values.
      */
     public Move(byte squareFrom, byte squareTo, HashMap<EPieceAbbreviation, Long> gameState) {
         this.squareFrom = squareFrom;
@@ -37,7 +41,9 @@ public class Move {
     }
 
     /**
+     * <p>
      * Retrieves the game state before the move.
+     * </p>
      *
      * @return a {@code HashMap} representing the game state with piece abbreviations as keys and bitboards as values.
      */
@@ -47,7 +53,9 @@ public class Move {
     }
 
     /**
+     * <p>
      * Returns a string representation of the move in algebraic notation.
+     * </p>
      *
      * @return a {@code String} representation of the move in the format "source square to destination square".
      */
@@ -55,5 +63,36 @@ public class Move {
     public String toString() {
         // Returns the played move
         return fileFrom + rankFrom + fileTo + rankTo;
+    }
+
+    /**
+     * <p>
+     * Compares this {@code Move} object to the specified object for equality. The result is {@code true} if and only if the
+     * argument is not {@code null} and is a {@code Move} object that represents the same move, with the same starting
+     * and ending squares and the same game state.
+     * </p>
+     *
+     * @param o The object to compare this {@code Move} against.
+     * @return {@code true} if the given object represents a {@code Move} equivalent to this move, {@code false} otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return squareFrom == move.squareFrom && squareTo == move.squareTo && Objects.equals(gameState, move.gameState);
+    }
+
+    /**
+     * <p>
+     * Calculates a hash code value for this {@code Move}. The hash code is computed based on the starting and ending squares,
+     * as well as the game state.
+     * </p>
+     *
+     * @return A hash code value for this {@code Move}.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(squareFrom, squareTo, gameState);
     }
 }
