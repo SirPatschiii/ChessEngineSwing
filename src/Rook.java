@@ -8,7 +8,7 @@ import java.util.HashMap;
  * </p>
  *
  * @author SirPatschiii
- * @version 09.07.2024
+ * @version 10.07.2024
  */
 public class Rook {
     private Rook() {
@@ -35,16 +35,13 @@ public class Rook {
         for (int i = 0; i < 64; i++) {
             // Mask to check square by square
             mask = 1L << i;
-            // Pick pawn by pawn
+            // Pick rook by rook
             rook = whiteRooks & mask;
 
             // Proceed if a rook is on the current observed square
             if (rook != 0) {
                 // Calculate all possible moves for the observed rook
                 long allPossibleMoves = getAllPossibleMoves(rook, whitePieces, blackPieces);
-
-                System.out.println("White Rook Moves");
-                BitHelper.printBitstreamInMatrix(allPossibleMoves);
 
                 for (int j = 0; j < 64; j++) {
                     // Mask to check square by square
@@ -83,16 +80,13 @@ public class Rook {
         for (int i = 0; i < 64; i++) {
             // Mask to check square by square
             mask = 1L << i;
-            // Pick pawn by pawn
+            // Pick rook by rook
             rook = blackRooks & mask;
 
             // Proceed if a rook is on the current observed square
             if (rook != 0) {
                 // Calculate all possible moves for the observed rook
                 long allPossibleMoves = getAllPossibleMoves(rook, blackPieces, whitePieces);
-
-                System.out.println("Black Rook Moves");
-                BitHelper.printBitstreamInMatrix(allPossibleMoves);
 
                 for (int j = 0; j < 64; j++) {
                     // Mask to check square by square
