@@ -9,7 +9,7 @@ import java.util.Map;
  * </p>
  *
  * @author SirPatschiii
- * @version 08.07.2024
+ * @version 14.07.2024
  */
 public class BoardHelper {
     private BoardHelper() {
@@ -25,7 +25,7 @@ public class BoardHelper {
      * @return the rank (1-8) corresponding to the given index
      */
     public static short indexToRank(short index) {
-        return (short) (7 - index / 8 + 1);
+        return (short) ((index / 8) + 1);
     }
 
     /**
@@ -38,7 +38,7 @@ public class BoardHelper {
      */
     public static EChessFile indexToFile(short index) {
         EChessFile[] chessFiles = EChessFile.values();
-        return chessFiles[index % 8];
+        return chessFiles[7 - index % 8];
     }
 
     /**
