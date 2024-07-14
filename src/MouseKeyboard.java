@@ -5,10 +5,10 @@ import java.awt.event.MouseListener;
 
 /**
  * The {@code MouseKeyboard} class implements {@code KeyListener} and {@code MouseListener} to handle keyboard and mouse events for the chess engine GUI.
- * This class interacts with the {@code ChessEngine} to manage user inputs from both the keyboard and the mouse.
+ * This class interacts with the {@link ChessEngine} to manage user inputs from both the keyboard and the mouse.
  *
  * @author SirPatschiii
- * @version 2024-06-26
+ * @version 14.07.2024
  */
 public class MouseKeyboard implements KeyListener, MouseListener {
     private final ChessEngine cChessEngine;
@@ -21,7 +21,7 @@ public class MouseKeyboard implements KeyListener, MouseListener {
     /**
      * Constructs a {@code MouseKeyboard} object that listens to keyboard and mouse events.
      *
-     * @param chessEngine the {@code ChessEngine} instance to interact with for processing moves.
+     * @param chessEngine the {@link ChessEngine} instance to interact with for processing moves.
      */
     public MouseKeyboard(ChessEngine chessEngine) {
         cChessEngine = chessEngine;
@@ -91,7 +91,7 @@ public class MouseKeyboard implements KeyListener, MouseListener {
         // Checks if the mouse was over the board
         if (mouseX >= 0 && mouseX <= 799 && mouseY >= 0 && mouseY <= 799) {
             // Calculates the square the mouse selected
-            squareFrom = (byte) ((mouseX / 100) + (mouseY / 100 * 8));
+            squareFrom = (byte) (63 - ((mouseX / 100) + (mouseY / 100 * 8)));
         }
     }
 
@@ -109,7 +109,7 @@ public class MouseKeyboard implements KeyListener, MouseListener {
         // Checks if the mouse was over the board
         if (mouseX >= 0 && mouseX <= 799 && mouseY >= 0 && mouseY <= 799) {
             // Calculates the square the mouse selected
-            squareTo = (byte) ((mouseX / 100) + (mouseY / 100 * 8));
+            squareTo = (byte) (63 - ((mouseX / 100) + (mouseY / 100 * 8)));
             // Passes the squares to the chess engine to check the move for its correctness
             cChessEngine.checkMove(squareFrom, squareTo);
         }
