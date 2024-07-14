@@ -5,24 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The {@code GUI} class manages the graphical user interface for a chess game.
- * It includes methods for initializing the frame, drawing squares, pieces, and other GUI elements.
- * The class handles user input through a {@link MouseKeyboard} instance and updates based on the game state from {@link ChessEngine}.
- *
  * <p>
- * The GUI supports both white and black perspectives and uses various images and configurations to represent the chess board and pieces.
- * </p>
- *
- * <p>
- * This class uses Swing components for GUI elements and Java's {@code ImageIcon} to manage images for squares and pieces.
- * </p>
- *
- * <p>
- * Note: This class assumes specific configurations and images are available in the project's resources.
+ * The {@code GUI} class represents the graphical user interface for the chess game.
+ * It initializes and manages the display of the chessboard, pieces, and other GUI components.
  * </p>
  *
  * @author SirPatschiii
- * @version 2024-06-26
+ * @version 14.07.2024
  */
 public class GUI {
     private final ChessEngine cChessEngine;
@@ -46,11 +35,12 @@ public class GUI {
     private static short adjustmentY;
 
     /**
-     * Constructs a {@code GUI} object initialized with a {@code ChessEngine} and {@code MouseKeyboard} instance.
-     * Initializes GUI components and sets up the initial game state representation.
+     * <p>
+     * Constructs a new {@code GUI} object with the specified {@link ChessEngine} and {@link MouseKeyboard}.
+     * </p>
      *
-     * @param chessEngine   the {@code ChessEngine} instance managing the game logic.
-     * @param mouseKeyboard the {@code MouseKeyboard} instance handling user input.
+     * @param chessEngine the chess engine to be used
+     * @param mouseKeyboard the mouse and keyboard handler to be used
      */
     public GUI(ChessEngine chessEngine, MouseKeyboard mouseKeyboard) {
         cChessEngine = chessEngine;
@@ -72,8 +62,10 @@ public class GUI {
     }
 
     /**
+     * <p>
      * Initializes the GUI components, including the frame, squares, piece images, and square descriptions.
      * Prepares the GUI for rendering the chess board and pieces based on initial configurations.
+     * </p>
      */
     private void initializeGUI() {
         initializeFrame();
@@ -87,8 +79,10 @@ public class GUI {
     }
 
     /**
+     * <p>
      * Initializes the main frame of the GUI with specific configurations and settings.
      * Sets up the frame's appearance, size, background, and event listeners.
+     * </p>
      */
     private void initializeFrame() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,8 +100,10 @@ public class GUI {
     }
 
     /**
+     * <p>
      * Initializes the square labels on the chess board, arranging them in a grid layout.
      * Sets up their positions, sizes, and initial appearances.
+     * </p>
      */
     private void initializeSquares() {
         // Create square labels for the chess board
@@ -141,25 +137,31 @@ public class GUI {
         }
 
         // Position squares and labels on the frame based on chess board layout
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                int index = col + row * 8;
+        int index = 0;
+        for (int row = 7; row >= 0; row--) {
+            for (int col = 7; col >= 0; col--) {
                 int x = col * width + adjustmentX;
                 int y = row * height + adjustmentY;
 
                 squares.get(index).setBounds(x, y, width, height);
                 squareLetters.get(index).setBounds(x, y, width, height);
                 squareNumbers.get(index).setBounds(x, y, width, height);
+                index++;
             }
         }
     }
 
     /**
-     * Initializes descriptions for specific squares on the chess board for both white and black perspectives.
-     * Uses {@link ESquareDescription} for mapping square numbers to descriptions.
+     * <p>
+     * Initializes the descriptions for the squares from both white and black perspectives.
+     * </p>
+     * <p>
+     * The descriptions map each square number to its corresponding description, represented by an enumeration value
+     * from {@link ESquareDescription}. This mapping helps in identifying each square uniquely from either perspective.
+     * </p>
      */
     private void initializeSquareDescriptions() {
-        double[] squareNumber = {7, 15, 23, 31, 39, 47, 55, 56, 57, 58, 59, 60, 61, 62, 63.0, 63.1};
+        double[] squareNumber = {56, 48, 40, 32, 24, 16, 8, 7, 6, 5, 4, 3, 2, 1, 0.0, 0.1};
 
         // Initialize descriptions for white perspective
         String[] squareDescription = {"L8", "D7", "L6", "D5", "L4", "D3", "L2", "LA", "DB", "LC", "DD", "LE", "DF", "LG", "DH", "D1"};
@@ -179,8 +181,14 @@ public class GUI {
     }
 
     /**
-     * Preloads images for chess pieces based on {@link EPieceAbbreviation} values.
-     * Scales images to fit the square size defined by {@code width} and {@code height}.
+     * <p>
+     * Preloads the images for all chess pieces and stores them in a hash map for quick access.
+     * </p>
+     * <p>
+     * This method iterates over all values of the {@link EPieceAbbreviation} enum, retrieves the corresponding image
+     * path from the configuration, and scales the image to fit the predefined width and height. The scaled image is then
+     * stored in the {@code pieces} hash map with the piece abbreviation as the key.
+     * </p>
      */
     private void preloadPieces() {
         EPieceAbbreviation[] pieceAbbreviation = EPieceAbbreviation.values();
@@ -192,8 +200,15 @@ public class GUI {
     }
 
     /**
-     * Preloads images for square letters (a-h) and square numbers (1-8) based on {@link ESquareLetterAbbreviation} and {@link ESquareNumberAbbreviation} values.
-     * Scales images to fit appropriate sizes for letters and numbers on the board.
+     * <p>
+     * Preloads the images for square letters and numbers and stores them in hash maps for quick access.
+     * </p>
+     * <p>
+     * This method iterates over all values of the {@link ESquareLetterAbbreviation} and {@link ESquareNumberAbbreviation} enums,
+     * retrieves the corresponding image paths from the configuration, and scales the images to fit predefined dimensions.
+     * The scaled images are then stored in the {@code squareLettersMap} and {@code squareNumbersMap} hash maps with the
+     * abbreviations as the keys.
+     * </p>
      */
     private void preloadSquareNames() {
         ESquareLetterAbbreviation[] squareLetterAbbreviation = ESquareLetterAbbreviation.values();
@@ -211,8 +226,13 @@ public class GUI {
     }
 
     /**
-     * Renders the GUI components, updating the chess board with current game state.
-     * Calls methods to draw squares, piece positions, and descriptions.
+     * <p>
+     * Renders the chess board by drawing the pieces and repainting the frame.
+     * </p>
+     * <p>
+     * This method invokes {@code drawPieces()} to update the piece icons on the squares and then calls {@code repaint()}
+     * on the frame to refresh the display.
+     * </p>
      */
     public void render() {
         drawPieces();
@@ -220,8 +240,13 @@ public class GUI {
     }
 
     /**
-     * Draws the squares of the chess board with alternating colors.
-     * Colors are defined in an array and applied based on the position of the square.
+     * <p>
+     * Draws the chess board squares with alternating colors.
+     * </p>
+     * <p>
+     * This method sets the background color of each square on the chess board, alternating between two colors
+     * to create the standard checkerboard pattern. The colors used are a light beige and a darker brown.
+     * </p>
      */
     private void drawSquares() {
         Color[] colors = {new Color(241, 217, 192), new Color(169, 122, 101)};
@@ -237,90 +262,100 @@ public class GUI {
     }
 
     /**
-     * Draws square descriptions on the chess board based on the current perspective (white or black).
-     * Uses {@link ESquareDescription} values to determine which description to display on specific squares.
+     * <p>
+     * Draws the descriptions for the chess squares based on the current perspective (white or black).
+     * </p>
+     * <p>
+     * This method iterates through the predefined square descriptions and sets the corresponding icons
+     * for the square letters and numbers based on the current perspective. The descriptions are stored
+     * in two separate maps: one for the white perspective and one for the black perspective. It assigns
+     * icons based on the square's position on the board, ensuring the correct visual representation
+     * for the players.
+     * </p>
+     *
+     * @throws RuntimeException if an illegal key is encountered in the square description HashMap.
      */
     private void drawSquareDescription() {
         // Draw square descriptions based on perspective (white or black)
         if (perspectiveWhite) {
             for (Map.Entry<Double, ESquareDescription> entry : squareDescriptionWhitePerspective.entrySet()) {
                 switch (entry.getKey().intValue()) {
-                    case 7 ->
-                            squareNumbers.get(7).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 15 ->
-                            squareNumbers.get(15).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 23 ->
-                            squareNumbers.get(23).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 31 ->
-                            squareNumbers.get(31).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 39 ->
-                            squareNumbers.get(39).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 47 ->
-                            squareNumbers.get(47).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 55 ->
-                            squareNumbers.get(55).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 56 ->
-                            squareLetters.get(56).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 57 ->
-                            squareLetters.get(57).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 58 ->
-                            squareLetters.get(58).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 59 ->
-                            squareLetters.get(59).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 60 ->
-                            squareLetters.get(60).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 61 ->
-                            squareLetters.get(61).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 62 ->
-                            squareLetters.get(62).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 63 -> {
-                        if (entry.getKey() == 63.0) {
-                            squareLetters.get(63).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                        } else if (entry.getKey() == 63.1) {
-                            squareNumbers.get(63).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 0 -> {
+                        if (entry.getKey() == 0.0) {
+                            squareLetters.getFirst().setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                        } else if (entry.getKey() == 0.1) {
+                            squareNumbers.getFirst().setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
                         }
                     }
+                    case 1 ->
+                            squareLetters.get(1).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 2 ->
+                            squareLetters.get(2).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 3 ->
+                            squareLetters.get(3).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 4 ->
+                            squareLetters.get(4).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 5 ->
+                            squareLetters.get(5).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 6 ->
+                            squareLetters.get(6).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 7 ->
+                            squareLetters.get(7).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 8 ->
+                            squareNumbers.get(8).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 16 ->
+                            squareNumbers.get(16).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 24 ->
+                            squareNumbers.get(24).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 32 ->
+                            squareNumbers.get(32).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 40 ->
+                            squareNumbers.get(40).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 48 ->
+                            squareNumbers.get(48).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 56 ->
+                            squareNumbers.get(56).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
                     default -> throw new RuntimeException("Illegal key in HashMap!");
                 }
             }
         } else {
             for (Map.Entry<Double, ESquareDescription> entry : squareDescriptionBlackPerspective.entrySet()) {
                 switch (entry.getKey().intValue()) {
-                    case 7 ->
-                            squareNumbers.get(7).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 15 ->
-                            squareNumbers.get(15).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 23 ->
-                            squareNumbers.get(23).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 31 ->
-                            squareNumbers.get(31).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 39 ->
-                            squareNumbers.get(39).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 47 ->
-                            squareNumbers.get(47).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 55 ->
-                            squareNumbers.get(55).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
-                    case 56 ->
-                            squareLetters.get(56).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 57 ->
-                            squareLetters.get(57).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 58 ->
-                            squareLetters.get(58).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 59 ->
-                            squareLetters.get(59).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 60 ->
-                            squareLetters.get(60).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 61 ->
-                            squareLetters.get(61).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 62 ->
-                            squareLetters.get(62).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                    case 63 -> {
-                        if (entry.getKey() == 63.0) {
-                            squareLetters.get(63).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
-                        } else if (entry.getKey() == 63.1) {
-                            squareNumbers.get(63).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 0 -> {
+                        if (entry.getKey() == 0.0) {
+                            squareLetters.getFirst().setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                        } else if (entry.getKey() == 0.1) {
+                            squareNumbers.getFirst().setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
                         }
                     }
+                    case 1 ->
+                            squareLetters.get(1).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 2 ->
+                            squareLetters.get(2).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 3 ->
+                            squareLetters.get(3).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 4 ->
+                            squareLetters.get(4).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 5 ->
+                            squareLetters.get(5).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 6 ->
+                            squareLetters.get(6).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 7 ->
+                            squareLetters.get(7).setIcon(squareLettersMap.get(ESquareLetterAbbreviation.valueOf(entry.getValue().toString())));
+                    case 8 ->
+                            squareNumbers.get(8).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 16 ->
+                            squareNumbers.get(16).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 24 ->
+                            squareNumbers.get(24).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 32 ->
+                            squareNumbers.get(32).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 40 ->
+                            squareNumbers.get(40).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 48 ->
+                            squareNumbers.get(48).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
+                    case 56 ->
+                            squareNumbers.get(56).setIcon(squareNumbersMap.get(ESquareNumberAbbreviation.valueOf(entry.getValue().toString())));
                     default -> throw new RuntimeException("Illegal key in HashMap!");
                 }
             }
@@ -328,8 +363,14 @@ public class GUI {
     }
 
     /**
-     * Draws chess pieces on the board based on the current game state.
-     * Retrieves piece positions from the {@code ChessEngine} and displays corresponding images.
+     * <p>
+     * Draws the chess pieces on the board based on the current game state.
+     * </p>
+     * <p>
+     * This method retrieves the current game state from the chess engine, clears any existing piece icons from
+     * the board squares, and then sets the appropriate icons for each piece according to their positions as
+     * represented in the game state bitboards.
+     * </p>
      */
     private void drawPieces() {
         HashMap<EPieceAbbreviation, Long> gameState = cChessEngine.getGameState();
@@ -344,37 +385,40 @@ public class GUI {
             long bitboard = entry.getValue();
             for (int i = 0; i < 64; i++) {
                 if (BitHelper.isBitSet(bitboard, i)) {
-                    squares.get(63 - i).setIcon(pieces.get(entry.getKey()));
+                    squares.get(i).setIcon(pieces.get(entry.getKey()));
                 }
             }
         }
     }
 
     /**
-     * Sets the perspective of the GUI to either white or black.
-     * Determines how square descriptions are displayed based on this perspective.
+     * <p>
+     * Sets the perspective of the chess board display to either white or black.
+     * </p>
      *
-     * @param perspectiveWhite {@code true} to set white perspective, {@code false} for black perspective.
+     * @param perspectiveWhite {@code true} to set the perspective to white, {@code false} for black.
      */
     public void setPerspectiveWhite(boolean perspectiveWhite) {
         this.perspectiveWhite = perspectiveWhite;
     }
 
     /**
-     * Retrieves the horizontal adjustment value for positioning elements on the GUI.
-     * Used to calculate X coordinates for squares and labels.
+     * <p>
+     * Retrieves the X-axis adjustment for positioning elements in the GUI.
+     * </p>
      *
-     * @return the horizontal adjustment value.
+     * @return The X-axis adjustment as a {@code short}.
      */
     public static short getAdjustmentX() {
         return adjustmentX;
     }
 
     /**
-     * Retrieves the vertical adjustment value for positioning elements on the GUI.
-     * Used to calculate Y coordinates for squares and labels.
+     * <p>
+     * Retrieves the Y-axis adjustment for positioning elements in the GUI.
+     * </p>
      *
-     * @return the vertical adjustment value.
+     * @return The Y-axis adjustment as a {@code short}.
      */
     public static short getAdjustmentY() {
         return adjustmentY;
