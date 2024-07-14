@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -8,12 +9,13 @@ import java.util.Objects;
  * </p>
  *
  * @author SirPatschiii
- * @version 10.07.2024
+ * @version 14.07.2024
  */
-public class Move {
+public class Move implements Cloneable {
     private final short squareFrom;
     private final short squareTo;
-    private final HashMap<EPieceAbbreviation, Long> gameState;
+    private HashMap<EPieceAbbreviation, Long> gameState;
+    private EPieceAbbreviation piece;
 
     private final short rankFrom;
     private final String fileFrom;
@@ -38,7 +40,49 @@ public class Move {
         fileFrom = BoardHelper.indexToFile(squareFrom).toString();
         rankTo = BoardHelper.indexToRank(squareTo);
         fileTo = BoardHelper.indexToFile(squareTo).toString();
+
+        calculateMovedPiece();
     }
+
+    /**
+     * <p>
+     * Calculates the piece that has been moved from a specific square in the current game state.
+     * It iterates through the game state and checks which piece is present at the source square defined by {@code squareFrom}.
+     * </p>
+     *
+     * @throws IllegalStateException if no piece is found at the specified square.
+     */
+    private void calculateMovedPiece() {
+        for (Map.Entry<EPieceAbbreviation, Long> entry : gameState.entrySet()) {
+            long bitboard = entry.getValue();
+            if (BitHelper.isBitSet(bitboard, squareFrom)) {
+                piece = entry.getKey();
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves the starting square of this move.
+     * </p>
+     *
+     * @return the short value representing the starting square.
+     */
+    public short getSquareFrom() {
+        return squareFrom;
+    }
+
+    /**
+     * <p>
+     * Retrieves the destination square of this move.
+     * </p>
+     *
+     * @return the short value representing the destination square.
+     */
+    public short getSquareTo() {
+        return squareTo;
+    }
+
 
     /**
      * <p>
@@ -50,6 +94,10 @@ public class Move {
     public HashMap<EPieceAbbreviation, Long> getGameState() {
         // Returns the game state which was bevor the actual move as played
         return gameState;
+    }
+
+    public EPieceAbbreviation getPiece() {
+        return piece;
     }
 
     /**
@@ -94,5 +142,30 @@ public class Move {
     @Override
     public int hashCode() {
         return Objects.hash(squareFrom, squareTo, gameState);
+    }
+
+    /**
+     * <p>
+     * Creates a clone of the current {@code Move} object.
+     * </p>
+     * <p>
+     * This method overrides the {@code clone} method to provide a deep copy of the {@code Move} object,
+     * ensuring that the internal game state is also cloned to prevent shared references. The cloning process
+     * involves invoking the superclass's {@code clone} method and then cloning the {@code gameState} map.
+     *
+     * @return a new {@code Move} object that is a copy of this instance.
+     * @throws AssertionError if the cloning process fails, which should not happen as the class implements {@link Cloneable}.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Move clone() {
+        Move cloned = null;
+        try {
+            cloned = (Move) super.clone();
+            cloned.gameState = (HashMap<EPieceAbbreviation, Long>) gameState.clone();
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
