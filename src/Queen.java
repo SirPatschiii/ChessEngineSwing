@@ -8,7 +8,7 @@ import java.util.HashMap;
  * </p>
  *
  * @author SirPatschiii
- * @version 10.07.2024
+ * @version 14.07.2024
  */
 public class Queen {
     private Queen() {
@@ -51,7 +51,7 @@ public class Queen {
                     // generate all found possible moves
                     if ((allPossibleMoves & mask) != 0) {
                         @SuppressWarnings("unchecked")
-                        Move move = new Move((byte) (63 - i), (byte) (63 - j), (HashMap<EPieceAbbreviation, Long>) gameState.clone());
+                        Move move = new Move((byte) i, (byte) j, (HashMap<EPieceAbbreviation, Long>) gameState.clone());
                         possibleMoves.addLast(move);
                     }
                 }
@@ -97,7 +97,7 @@ public class Queen {
                     // generate all found possible moves
                     if ((allPossibleMoves & mask) != 0) {
                         @SuppressWarnings("unchecked")
-                        Move move = new Move((byte) (63 - i), (byte) (63 - j), (HashMap<EPieceAbbreviation, Long>) gameState.clone());
+                        Move move = new Move((byte) i, (byte) j, (HashMap<EPieceAbbreviation, Long>) gameState.clone());
                         possibleMoves.addLast(move);
                     }
                 }
