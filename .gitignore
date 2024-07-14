@@ -4,3 +4,6 @@ build/*
 
 # Excluding tests
 test/*
+
+# Excluding "diverse" files
+other/*
