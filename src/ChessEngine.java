@@ -9,7 +9,7 @@ import java.util.Stack;
  * </p>
  * <p>
  * It manages the game state, validates moves, handles move history, and interacts with the graphical user interface (GUI).
- * The game state is stored using a {@link HashMap} where each {@link EPieceAbbreviation} is mapped to its corresponding bitboard.
+ * The game state is stored using a {@code HashMap} where each {@link EPieceAbbreviation} is mapped to its corresponding bitboard.
  * This class initializes the game with default positions and provides methods to check move validity, execute moves,
  * and undo the last move.
  * </p>
@@ -18,7 +18,7 @@ import java.util.Stack;
  * </p>
  *
  * @author SirPatschiii
- * @version 14.07.2024
+ * @version 15.07.2024
  */
 @SuppressWarnings("unused")
 public class ChessEngine {
@@ -113,7 +113,7 @@ public class ChessEngine {
      * @param squareTo   The target square index of the move.
      */
     public void checkMove(byte squareFrom, byte squareTo) {
-        // Create new move with entered data from the user and the game state bevor the move is executed
+        // Create a new move with entered data from the user, and the game state bevor the move is executed
         @SuppressWarnings("unchecked")
         Move movePlayed = new Move(squareFrom, squareTo, (HashMap<EPieceAbbreviation, Long>) gameState.clone());
 
@@ -123,7 +123,7 @@ public class ChessEngine {
             moveHistory.push(movePlayed);
 
             for (Map.Entry<EPieceAbbreviation, Long> entry : gameState.entrySet()) {
-                // Deletes piece on target square if existent
+                // Deletes a piece on target square if existent
                 if (BitHelper.isBitSet(entry.getValue(), squareTo)) {
                     entry.setValue(BitHelper.clearBit(entry.getValue(), squareTo));
                 }
@@ -151,58 +151,98 @@ public class ChessEngine {
      *
      * @return An {@code ArrayList} of {@link Move} objects representing all possible moves for the current player.
      */
-    public ArrayList<Move> generateAllPossibleMoves() {
+    public ArrayList<Move> generateAllPossibleMoves(HashMap<EPieceAbbreviation, Long> gameState) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
 
         // Generate moves for white pieces
         if (whiteToMove) {
-            for (Move move : Pawn.generatePossibleWhitePawnMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Knight.generatePossibleWhiteKnightMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Bishop.generatePossibleWhiteBishopMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Rook.generatePossibleWhiteRookMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Queen.generatePossibleWhiteQueenMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : King.generatePossibleWhiteKingMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
+            possibleMoves = generateAllPossibleWhiteMoves(gameState);
         }
 
         // Generate moves for black pieces
         if (!whiteToMove) {
-            for (Move move : Pawn.generatePossibleBlackPawnMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Knight.generatePossibleBlackKnightMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Bishop.generatePossibleBlackBishopMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Rook.generatePossibleBlackRookMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : Queen.generatePossibleBlackQueenMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
-            for (Move move : King.generatePossibleBlackKingMoves(gameState)) {
-                possibleMoves.addLast(move);
-            }
+            possibleMoves = generateAllPossibleBlackMoves(gameState);
         }
 
         return possibleMoves;
     }
 
+    /**
+     * <p>
+     * Generates a list of all possible moves for the white pieces, based on the current game state.
+     * </p>
+     *
+     * @return An {@code ArrayList} of {@link Move} objects representing all possible moves for the current player.
+     */
+    private ArrayList<Move> generateAllPossibleWhiteMoves(HashMap<EPieceAbbreviation, Long> gameState) {
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+
+        for (Move move : Pawn.generatePossibleWhitePawnMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Knight.generatePossibleWhiteKnightMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Bishop.generatePossibleWhiteBishopMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Rook.generatePossibleWhiteRookMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Queen.generatePossibleWhiteQueenMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : King.generatePossibleWhiteKingMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+
+        return possibleMoves;
+    }
+
+    /**
+     * <p>
+     * Generates a list of all possible moves for the black pieces, based on the current game state.
+     * </p>
+     *
+     * @return An {@code ArrayList} of {@link Move} objects representing all possible moves for the current player.
+     */
+    private ArrayList<Move> generateAllPossibleBlackMoves(HashMap<EPieceAbbreviation, Long> gameState) {
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+
+        for (Move move : Pawn.generatePossibleBlackPawnMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Knight.generatePossibleBlackKnightMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Bishop.generatePossibleBlackBishopMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Rook.generatePossibleBlackRookMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : Queen.generatePossibleBlackQueenMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+        for (Move move : King.generatePossibleBlackKingMoves(gameState)) {
+            possibleMoves.addLast(move);
+        }
+
+        return possibleMoves;
+    }
+
+    /**
+     * <p>
+     *  Checks if the given move is valid by generating all possible moves for the current player
+     *  and filtering out invalid moves. The method then compares the provided move with the possible moves.
+     * </p>
+     *
+     * @param movePlayed The {@link Move} object representing the move to be validated.
+     * @return {@code true} if the move is valid, {@code false} otherwise.
+     */
     public boolean isMoveValid(Move movePlayed) {
-        ArrayList<Move> possibleMoves = generateAllPossibleMoves();
+        ArrayList<Move> possibleMoves = generateAllPossibleMoves(gameState);
+        filterPossibleMovesForInvalidMoves(possibleMoves);
 
         // Iterate through all possible moves
         for (Move possibleMove : possibleMoves) {
@@ -217,6 +257,47 @@ public class ChessEngine {
 
     /**
      * <p>
+     *  Filters out illegal moves from the provided list of possible moves. A move is considered illegal if it leaves the
+     *  player's own king in check.
+     * </p>
+     *
+     * @param possibleMoves An {@code ArrayList} of {@link Move} objects representing all possible moves before filtering.
+     */
+    public void filterPossibleMovesForInvalidMoves(ArrayList<Move> possibleMoves) {
+        ArrayList<Move> illegalMoves = new ArrayList<>();
+        // Delete moves which are illegal because the own king is in check afterward
+        for (Move possibleMove : possibleMoves) {
+            Move move = possibleMove.clone();
+            HashMap<EPieceAbbreviation, Long> gameState = move.getGameState();
+
+            // Calculate the game state from the current position + 1
+            long bitboard = gameState.get(move.getPiece());
+            bitboard = BitHelper.clearBit(bitboard, move.getSquareFrom());
+            bitboard = BitHelper.setBit(bitboard, move.getSquareTo());
+            gameState.replace(move.getPiece(), bitboard);
+
+            // Check if now the own king is in check
+            if (whiteToMove) {
+                long possession = BoardHelper.getBlackAttackRays(gameState);
+                if ((possession & gameState.get(EPieceAbbreviation.WK)) != 0) {
+                    illegalMoves.addLast(possibleMove);
+                }
+            }
+            if (!whiteToMove) {
+                long possession = BoardHelper.getWhiteAttackRays(gameState);
+                if ((possession & gameState.get(EPieceAbbreviation.BK)) != 0) {
+                    illegalMoves.addLast(possibleMove);
+                }
+            }
+        }
+        // Remove the illegal moves from the possible moves
+        for (Move illegalMove : illegalMoves) {
+            possibleMoves.remove(illegalMove);
+        }
+    }
+
+    /**
+     * <p>
      * Undoes the last move.
      * </p>
      * <p>
@@ -227,11 +308,11 @@ public class ChessEngine {
     public void undoMove() {
         // Checks if there are moves to take back
         if (!moveHistory.empty()) {
-            // Gets latest move and the game state bevor the move was executed
+            // Gets the latest move, and the game state bevor the move was executed
             Move move = moveHistory.pop();
             HashMap<EPieceAbbreviation, Long> lastGameState = move.getGameState();
 
-            // Replaces current game state with game state move - 1
+            // Replaces current game state with game state move – 1
             for (Map.Entry<EPieceAbbreviation, Long> entry : lastGameState.entrySet()) {
                 gameState.replace(entry.getKey(), entry.getValue());
             }
